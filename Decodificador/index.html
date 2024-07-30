@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Decodificador de Texto</title>
+
+        <link rel="stylesheet" href="style.css">
+
+        <script src="https://kit.fontawesome.com/ed615418ed.js" crossorigin="anonymous"></script>
+
+    </head>
+
+    <body>
+        <header class="cabecalho">
+            <i class="fa-regular fa-comment-dots"></i>
+        </header>
+        <main class="apresentacao">
+            <div class="apresentacao_conteudo">
+                <section>
+                    <textarea class="area_texto1" id="input-frase" placeholder="Digite seu texto"></textarea>
+                    <div class="atencao">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <p>Apenas letras minúsculas e sem acento.</p>
+                    </div>
+                    <div class="botoes">
+                        <button onclick="criptografarFrase()" class="botao1">Criptografar</button>
+                        <button onclick="descriptografarTexto()" class="botao2">Descriptografar</button>
+                    </div>
+                </section>
+                
+                <section class="area-saida">
+                    <textarea class="area_texto2" id="output-frase" readonly></textarea>
+                    <img id="imagem" src="High quality products 1 1.png" class="img_saida">
+                    <p id="txt" class="t1">Nenhuma mensagem encontrada</p>
+                    <p id="txt1" class="t2">Digite um texto que você deseja criptografar ou descriptografar</p>
+                    <button class="botao3" id="copyButton">Copiar</button>
+                </section>
+            </div>
+
+            <script>
+                var copyButton = document.getElementById('copyButton');
+                var textToCopy = document.getElementById('output-frase');
+
+                // Adiciona um evento de clique ao botão
+                copyButton.addEventListener('click', function () {
+                    // Seleciona o texto
+                    textToCopy.select();
+                    textToCopy.setSelectionRange(0, 99999); // Para dispositivos móveis
+
+                    // Copia o texto para a área de transferência
+                    document.execCommand('copy');
+                });
+
+                function criptografar(frase) {
+                    // Define as substituições a serem realizadas
+                    const substituicoes = {
+                        'e': 'enter',
+                        'i': 'imes',
+                        'a': 'ai',
+                        'o': 'ober',
+                        'u': 'ufat'
+                    };
+
+                    // Utiliza o método replace com uma expressão regular para substituir cada letra pela sua forma criptografada
+                    const fraseCriptografada = frase.replace(/[eiuoa]/g, function (letra) {
+                        return substituicoes[letra];
+                    });
+
+                    return fraseCriptografada;
+                }
+
+                function criptografarFrase() {
+                    // Obtém o valor do textarea de entrada
+                    const fraseOriginal = document.getElementById('input-frase').value;
+
+                    // Criptografa a frase
+                    const fraseCriptografada = criptografar(fraseOriginal);
+
+                    // Define o valor do textarea de saída
+                    document.getElementById('output-frase').value = fraseCriptografada;
+                    
+                    document.getElementById("output-frase").style.display = "inline";
+
+                    document.getElementById("copyButton").style.display = "inline";
+                    document.getElementById("imagem").style.display = "none";
+                    document.getElementById("txt").style.display = "none";
+                    document.getElementById("txt1").style.display = "none";
+                }
+
+                function descriptografar(textoCriptografado) {
+                    // Dicionário de substituições para descriptografar
+                    const substituicoes = {
+                        "enter": "e",
+                        "imes": "i",
+                        "ai": "a",
+                        "ober": "o",
+                        "ufat": "u"
+                    };
+
+                    // Ordenar as chaves por comprimento em ordem decrescente para evitar substituições incorretas
+                    const chaves = Object.keys(substituicoes).sort((a, b) => b.length - a.length);
+
+                    let textoDescriptografado = textoCriptografado;
+
+                    // Substituir cada substring criptografada pela letra original
+                    for (const chave of chaves) {
+                        const letraOriginal = substituicoes[chave];
+                        textoDescriptografado = textoDescriptografado.split(chave).join(letraOriginal);
+                    }
+
+                    return textoDescriptografado;
+                }
+
+                function descriptografarTexto() {
+                    const textoCriptografado = document.getElementById('input-frase').value;
+                    const textoDescriptografado = descriptografar(textoCriptografado);
+                    document.getElementById('output-frase').value = textoDescriptografado;
+
+                    document.getElementById("output-frase").style.display = "inline";
+                
+                    document.getElementById("copyButton").style.display = "inline";
+                    document.getElementById("imagem").style.display = "none";
+                    document.getElementById("txt").style.display = "none";
+                    document.getElementById("txt1").style.display = "none";
+
+                }
+            </script>
+
+        </main>
+    </body>
+    <footer class="rodape">
+        <p>
+            Desenvolvido por Heloisa Rolins - 07/2024
+        </p>
+    </footer>
+    </html>
+</html>
